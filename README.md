@@ -46,6 +46,8 @@ To get started with this lab:
   flask run
   ```
 
+You can also use the included VSCode launch configuration in .vscode/launch.json, after you open this lab as a folder in VSCode.
+
 ### 1. Create The Blueprints
 
 You will separate out the project into three blueprints:
