@@ -48,6 +48,8 @@ To get started with this lab:
   flask run
   ```
 
+You can also use the included VSCode launch configuration in .vscode/launch.json, after you open this lab as a folder in VSCode.
+
 ### 0. Wha...?
 
 When poking around in Samir's app, you'll notice that something happens when you try to create two users with the same username or email. Fix this so that the app is able to handle this and let the user know the username is already taken.
@@ -62,6 +64,8 @@ user1 = post.user # with a Post object, you can get the user who posted it
 ```
 
 When loading the data for related items, specify that queries are returned instead. Hint: This is an option when defining the relationship!
+
+### 1. Create The Blueprints
 
 Another hint: Use `from blogger.models import db` to manipulate the database from a Flask shell session. You can also create and register a shell context processor so you don't have to type that every time you enter a shell session.
 
