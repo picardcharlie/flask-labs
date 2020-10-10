@@ -22,6 +22,8 @@ If you're not familiar with how Reddit works, here's what things mean:
 
 ## Instructions
 
+**Read everything before you start!**
+
 In this lab, you will be enhancing an existing many-to-many relationship and using a database join to allow users to subscrbe to subreddits.
 
 The code for interacting with the database uses SQLAlchemy functions you may not be familiar with, but this shouldn't stop you from doing this lab. What you've learned and seen from the course so far is all you need for completing this lab.
@@ -39,7 +41,7 @@ To get started with this lab:
   python3 -m venv env
   . env/bin/activate
   pip install -r requirements.txt
-  python kickstart.py
+  python kickstart.py # don't forget this!
   export FLASK_APP=flask_reddit.py
   # optional
   export FLASK_ENV=development
@@ -54,7 +56,7 @@ To get started with this lab:
   python3 -m venv env
   env\Scripts\activate.bat
   pip install -r requirements.txt
-  python kickstart.py
+  python kickstart.py # don't forget this!
   set FLASK_APP=flask_reddit.py
   # optional
   set FLASK_ENV=development
