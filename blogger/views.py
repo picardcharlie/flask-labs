@@ -107,21 +107,5 @@ def logout():
     return redirect(url_for('index'))
 
 
-@app.route('/blog/api/v0.1/posts', methods=['GET'])
-def get_tasks():
-    posts = Post.query.all()
-    """for i in api_posts:
-        title= i.title
-        description = i.description
-        data_dict= {'title': title, 'description': description}"""
-    """for i in posts:
-        t[i] = posts.title
-    print(t)"""
-    title = posts.title
-    print(title)
-    description = posts.description
-    return jsonify(title=title, description=description)
-
-
 if __name__ == '__main__':
     app.run()
