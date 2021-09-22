@@ -45,4 +45,6 @@ def costumes():
         },
     ]
 
+    # Emily wants to list her costumes above (listed above)
+    # for now she put a placeholder
     return f"Check out my costumes!"

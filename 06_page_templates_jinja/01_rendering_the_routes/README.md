@@ -10,11 +10,17 @@ ___
 
 ## Instructions
 
-In this lab, you are tasked with 1) rendering templates within routes in Flask and 2) using Jinja variable placeholders and control structures to dynamically show dog costumes and their descriptions.
+In this lab, you are tasked with
+    1. rendering templates within routes in Flask, and
+    2. using Jinja variable placeholders and control structures to dynamically show dog costumes and their descriptions
 
 ### 1. Rendering Templates
 
 Emily gave it a better shot with the routes, but then started working on HTML pages and previewing them manually. She wants to replace the old route text with the new templates, but didn't quite get that far. Have the routes render the corresponding templates directly.
+
+1. `welcome()` route should render the `index.html` template
+2. `services()` route should render the `services.html` template
+3. `costumes()` route should render the `costumes.html` template
 
 ### 2. Template Variable Placeholders
 
