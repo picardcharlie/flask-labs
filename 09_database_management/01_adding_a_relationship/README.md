@@ -65,8 +65,6 @@ user1 = post.user # with a Post object, you can get the user who posted it
 
 When loading the data for related items, specify that queries are returned instead. Hint: This is an option when defining the relationship!
 
-### 1. Create The Blueprints
-
 Another hint: Use `from blogger.models import db` to manipulate the database from a Flask shell session. You can also create and register a shell context processor so you don't have to type that every time you enter a shell session.
 
 ### 2. Clean Up The Code
