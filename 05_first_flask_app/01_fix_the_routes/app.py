@@ -5,7 +5,7 @@ app = Flask(__name__)
 
 @app.route('/')
 def welcome():
-    page = "Welcome to Emily's Dog Costumes!"
+    page = "Welcome to Emily's Dog Costumes! Ohh no."
 
 
 @app.route('services')
