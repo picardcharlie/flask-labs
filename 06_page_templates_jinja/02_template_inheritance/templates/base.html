@@ -1,0 +1,36 @@
+{% extends 'bootstrap/base.html' %}
+{% block title %}Emily's Dog Costumes {% endblock %}
+{% block head %}
+{{ super() }}
+<meta name="description" content="Emily's Dog Costumes">
+<link rel="stylesheet" href="static/style.css">
+{% endblock %}
+{% block body %}
+{% block header %}
+<header>
+        <div id="logo"><img src="static/logo.png"><h1>Emily's Dog Costumes</h1></div>
+        <nav>
+            <ul>
+                <li><a href="/">Home</a>
+                <li><a href="/services">Services</a>
+                <li><a href="/costumes">Costumes</a>
+            </ul>
+        </nav>
+    </header>
+{% endblock %}
+
+{% block content %}
+<section id="pageContent">
+{% block page_content %}{% endblock %}
+</section>
+{% endblock content%}
+
+{% block footer %}
+    <footer>
+        <p>&copy; All rights reserved to Emily, Dog Costume Extraordinaire</p>
+        <address>
+            Contact: <a href="mailto:emily@example.com">Emily, Dog Costumer</a>
+        </address>
+    </footer>
+{% endblock %}
+{% endblock %}
