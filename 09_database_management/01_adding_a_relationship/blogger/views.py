@@ -66,13 +66,21 @@ def update_post(pid, post_owner):
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
     signupform = SignUpForm(request.form)
-    if request.method == 'POST':
-        reg = User(signupform.firstname.data, signupform.lastname.data,\
-         signupform.username.data, signupform.password.data,\
-         signupform.email.data)
-        db.session.add(reg)
-        db.session.commit()
-        return redirect(url_for('index'))
+    if request.method == 'POST': #ugly submit.validation
+        # where db check goes
+        user = User.query.filter_by(username=signupform.username.data).first()
+        email = User.query.filter_by(email=signupform.email.data).first()
+
+        if user is None and email is None:
+            reg = User(signupform.firstname.data, signupform.lastname.data,\
+                signupform.username.data, signupform.password.data,\
+                signupform.email.data)
+            db.session.add(reg)
+            db.session.commit()
+            return redirect(url_for('index'))
+        else:
+            flash("Username or email in use already")
+
     return render_template('signup.html', signupform=signupform)
 
 
