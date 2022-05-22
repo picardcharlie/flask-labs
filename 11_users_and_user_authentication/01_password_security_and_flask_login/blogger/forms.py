@@ -1,7 +1,8 @@
 from flask_wtf import FlaskForm
-from wtforms import TextField, TextAreaField, SubmitField, PasswordField, BooleanField
-from wtforms.fields.html5 import EmailField
-from wtforms.validators import DataRequired, Length, Email
+from wtforms import StringField, TextAreaField, SubmitField, PasswordField, BooleanField
+from wtforms.fields import EmailField
+from wtforms.validators import DataRequired, Length, Email, ValidationError
+from .models import db, User
 
 def length_check(form,field):
     if len(field.data) == 0:
@@ -9,16 +10,25 @@ def length_check(form,field):
 
 
 class AddPostForm(FlaskForm):
-    title = TextField('Title', validators=[ DataRequired()])
+    title = StringField('Title', validators=[ DataRequired()])
     description = TextAreaField('Description', validators = [DataRequired()])
 
+
 class SignUpForm(FlaskForm):
-    firstname= TextField('First Name', validators= [DataRequired(), length_check])
-    lastname = TextField('Last Name', validators= [DataRequired()])
-    username = TextField('User Name', validators= [ DataRequired(), Length(min=4)])
+    firstname = StringField('First Name', validators= [DataRequired(), Length(min=1)])
+    lastname = StringField('Last Name', validators= [DataRequired()])
+    username = StringField('User Name', validators= [ DataRequired(), Length(min=4)])
     password = PasswordField('Password',validators=[ DataRequired(), Length(min=6)])
     email = EmailField('Email', validators= [DataRequired(), Email()])
     submit = SubmitField('Sign Up')
+
+    def validate_username(self, field):
+        if User.query.filter_by(username=field.data).first():
+            raise ValidationError("Username unavailable")
+
+    def validate_email(self, field):
+        if User.query.filter_by(email=field.data).first():
+            raise ValidationError("Email unavailable")
 
 
 class SignInForm(FlaskForm):
@@ -28,8 +38,8 @@ class SignInForm(FlaskForm):
     submit = SubmitField('Sign In')
 
 class AboutUserForm(FlaskForm):
-    firstname= TextField('First Name', validators= [DataRequired(), length_check])
-    lastname = TextField('Last Name', validators= [DataRequired()])
-    username = TextField('User Name', validators= [ DataRequired(), Length(min=4)])
+    firstname= StringField('First Name', validators= [DataRequired(), length_check])
+    lastname = StringField('Last Name', validators= [DataRequired()])
+    username = StringField('User Name', validators= [ DataRequired(), Length(min=4)])
     password = PasswordField('Password',validators=[ DataRequired(), Length(min=6)])
     email = EmailField('Email', validators= [DataRequired(), Email()])

@@ -1,3 +1,5 @@
+{% import "bootstrap/wtf.html" as wtf %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -14,26 +16,16 @@
 
     <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="http://getbootstrap.com/examples/signin/signin.css" rel="stylesheet">
-    <script src="./Signin Template for Bootstrap_files/ie-emulation-modes-warning.js"></script>
+    <!-- <script src="./Signin Template for Bootstrap_files/ie-emulation-modes-warning.js"></script> -->
 
     <link rel="stylesheet" type="text/css" href="static/css/styles.css">
 </head>
 <body>
 <div class="container">
-    <form class="form-signin" action="" method="POST">
-        <h2 class="form-signin-heading">Please Sign In</h2>
-        {{ signinform.email(placeholder="Email",id="inputEmail", class="form-control", autofocus="") }}
-        {{ signinform.password(placeholder="Password",id="inputPassword", class="form-control", required="") }}
-        <div class="checkbox">
-          <label>
-            <input type="checkbox" value="remember-me"> Remember me
-          </label>
-        </div>
-        {{ signinform.submit(class="btn btn-lg btn-primary btn-block")}}
-              <div class="noacc">
-        Don't have an account! <a href="signup">Sign Up Here</a>
-      </div>
-      </form>
+        {{ wtf.quick_form(signinform) }}
+        <div>Don't have an account! <a href="signup">Sign Up Here</a></div>
+     </div>
+
 
 </div>
 

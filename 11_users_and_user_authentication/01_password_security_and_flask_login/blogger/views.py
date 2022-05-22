@@ -2,7 +2,7 @@ from flask import Flask, request, session, redirect, url_for, render_template, f
 
 from . models import User, Post, db
 from . forms import AddPostForm, SignUpForm, SignInForm, AboutUserForm
-
+from flask_login import login_required, logout_user, login_user, current_user
 from blogger import app
 
 
@@ -13,7 +13,7 @@ def index():
 
 @app.route('/posts')
 def show_posts():
-    if session['user_available']:
+    if current_user.is_authenticated:
         posts = Post.query.all()
         user = User.query.all()
         return render_template('posts.html', posts=posts, user=user)
@@ -23,11 +23,11 @@ def show_posts():
 
 @app.route('/add', methods=['GET', 'POST'])
 def add_post():
-    if session['user_available']:
-        blogpost = AddPostForm(request.form)
-        us = User.query.filter_by(username=session['current_user']).first()
+    if current_user.is_authenticated:
+        blogpost = AddPostForm()
+        us = User.query.filter_by(email=current_user.email).first()
         if request.method == 'POST':
-            bp = Post(blogpost.title.data, blogpost.description.data, us.uid)
+            bp = Post(blogpost.title.data, blogpost.description.data, us.id)
             db.session.add(bp)
             db.session.commit()
             return redirect(url_for('show_posts'))
@@ -49,7 +49,7 @@ def delete_post(pid, post_owner):
 
 @app.route('/update/<pid>/<post_owner>', methods=('GET', 'POST'))
 def update_post(pid, post_owner):
-    if session['current_user'] == post_owner:
+    if current_user.is_authenticated:
         me = Post.query.get(pid)
         blogpost = AddPostForm(obj=me)
         if request.method == 'POST':
@@ -65,11 +65,9 @@ def update_post(pid, post_owner):
 
 @app.route('/signup', methods=['GET', 'POST'])
 def signup():
-    signupform = SignUpForm(request.form)
-    if request.method == 'POST':
-        reg = User(signupform.firstname.data, signupform.lastname.data,\
-         signupform.username.data, signupform.password.data,\
-         signupform.email.data)
+    signupform = SignUpForm()
+    if signupform.validate_on_submit():
+        reg = User(signupform.firstname.data, signupform.lastname.data, signupform.username.data, signupform.password.data, signupform.email.data)
         db.session.add(reg)
         db.session.commit()
         return redirect(url_for('index'))
@@ -79,31 +77,34 @@ def signup():
 @app.route('/signin', methods=['GET', 'POST'])
 def signin():
     signinform = SignInForm()
-    if request.method == 'POST':
-        em = signinform.email.data
-        log = User.query.filter_by(email=em).first()
-        if log.password == signinform.password.data:
-            current_user = log.username
-            session['current_user'] = current_user
-            session['user_available'] = True
-            return redirect(url_for('show_posts'))
+    if signinform.validate_on_submit():
+        login_username = signinform.email.data
+        login_password = signinform.password.data
+        check_login_user = User.query.filter_by(email=login_username).first()
+        if check_login_user is not None:
+            if check_login_user.email == login_username and check_login_user.verify_password(login_password) == True:
+                login_user(check_login_user, remember=signinform.remember_me.data)
+                next = request.args.get("next")
+                if next is None or not next.startswith("/"):
+                    next = url_for("show_posts")
+                return redirect(next)
+            else:
+                flash("username and password don't match.")
+        else:
+            flash("username not found.")
     return render_template('signin.html', signinform=signinform)
 
 
 @app.route('/about_user')
+@login_required
 def about_user():
     aboutuserform = AboutUserForm()
-    if session['user_available']:
-        user = User.query.filter_by(username=session['current_user']).first()
-        return render_template('about_user.html', user=user, aboutuserform=aboutuserform)
-    flash('You are not a Authenticated User')
-    return redirect(url_for('index'))
+    return render_template('about_user.html', user=user, aboutuserform=aboutuserform)
 
 
 @app.route('/logout')
 def logout():
-    session.clear()
-    session['user_available'] = False
+    logout_user()
     return redirect(url_for('index'))
 
 
